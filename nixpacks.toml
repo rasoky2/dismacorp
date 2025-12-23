@@ -1,8 +1,7 @@
-[providers]
-python = "3"
+providers = ["python"]
 
 [phases.setup]
-nixPkgs = ["pkgs.nodejs_20", "pkgs.python3", "pkgs.gnumake", "pkgs.gcc"]
+nixPkgs = ["pkgs.python3", "pkgs.gnumake", "pkgs.gcc"]
 
 [phases.install]
 cmds = ["npm ci"]
