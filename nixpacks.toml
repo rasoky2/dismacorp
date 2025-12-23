@@ -1,4 +1,4 @@
-providers = ["python"]
+providers = ["nodejs", "python"]
 
 [phases.setup]
 nixPkgs = ["pkgs.python3", "pkgs.gnumake", "pkgs.gcc"]
