@@ -88,7 +88,7 @@ export default function Footer() {
                 {
                   icon: <Phone size={18} />,
                   label: "Línea de Atención",
-                  text: "+51 987 654 321",
+                  text: "+51 965 282 183",
                 },
                 {
                   icon: <Mail size={18} />,
@@ -102,9 +102,20 @@ export default function Footer() {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">
                       {item.label}
                     </span>
-                    <span className="text-gray-200 font-medium text-sm">
-                      {item.text}
-                    </span>
+                    {item.label === "Línea de Atención" ? (
+                      <Link 
+                        href="https://wa.me/51965282183" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-gray-200 font-medium text-sm hover:text-secondary transition-colors"
+                      >
+                        {item.text}
+                      </Link>
+                    ) : (
+                      <span className="text-gray-200 font-medium text-sm">
+                        {item.text}
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}

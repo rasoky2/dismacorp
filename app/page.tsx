@@ -41,7 +41,7 @@ export default function Home() {
   const [products, setProducts] = useState<Array<{ id: string; name: string; description: string; imageUrl: string; category: string }>>([]);
   const [projects, setProjects] = useState<Array<{ id: string; title: string; description: string; imageUrl: string }>>([]);
   const [services, setServices] = useState<Array<{ id: string; title: string; description: string; tag: string; iconName: string; imageUrl: string | null }>>([]);
-  const [activeTab, setActiveTab] = useState<"servicios" | "proyectos" | "productos">("servicios");
+  const [activeTab, setActiveTab] = useState<"servicios" | "proyectos" | "productos">("proyectos");
 
   const getIcon = (iconName: string) => {
     const iconMap: Record<string, React.ReactNode> = {
@@ -59,6 +59,11 @@ export default function Home() {
       CheckCircle: <CheckCircle size={32} className="text-white" />,
     };
     return iconMap[iconName] || <Wrench size={32} className="text-white" />;
+  };
+
+  const getWhatsAppUrl = (itemName: string) => {
+    const message = encodeURIComponent(`Hola, me interesa obtener más información sobre: ${itemName}`);
+    return `https://wa.me/51965282183?text=${message}`;
   };
 
   useEffect(() => {
@@ -225,15 +230,33 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12 text-left md:text-center">
             <h2 className="text-secondary font-bold uppercase tracking-[0.3em] text-xs mb-4">
-              Catálogo Premium
+              {activeTab === "proyectos" 
+                ? "Portafolio de Éxito" 
+                : activeTab === "servicios"
+                ? "Nuestras Especialidades"
+                : "Catálogo Premium"}
             </h2>
             <h3 className="text-4xl md:text-6xl font-black text-primary">
-              Suministros Especializados
+              {activeTab === "proyectos" 
+                ? "Proyectos Hechos" 
+                : activeTab === "servicios"
+                ? "Servicios Especializados"
+                : "Suministros Especializados"}
             </h3>
           </div>
 
           {/* Tabs */}
           <div className="mb-12 flex flex-wrap justify-center gap-4 border-b border-gray-200 pb-4">
+            <button
+              onClick={() => setActiveTab("proyectos")}
+              className={`px-6 py-3 font-bold uppercase tracking-widest text-sm transition-all border-b-2 ${
+                activeTab === "proyectos"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-gray-400 hover:text-gray-600"
+              }`}
+            >
+              Proyectos
+            </button>
             <button
               onClick={() => setActiveTab("servicios")}
               className={`px-6 py-3 font-bold uppercase tracking-widest text-sm transition-all border-b-2 ${
@@ -244,18 +267,6 @@ export default function Home() {
             >
               Servicios
             </button>
-            {projects.length > 0 && (
-              <button
-                onClick={() => setActiveTab("proyectos")}
-                className={`px-6 py-3 font-bold uppercase tracking-widest text-sm transition-all border-b-2 ${
-                  activeTab === "proyectos"
-                    ? "border-primary text-primary"
-                    : "border-transparent text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                Proyectos
-              </button>
-            )}
             <button
               onClick={() => setActiveTab("productos")}
               className={`px-6 py-3 font-bold uppercase tracking-widest text-sm transition-all border-b-2 ${
@@ -281,7 +292,7 @@ export default function Home() {
                     whileHover={{ scale: 1.02 }}
                     className="h-full"
                   >
-                    <Card className="rounded-xl border-2 border-gray-200 transition-all hover:border-primary hover:shadow-2xl h-full flex flex-col bg-white overflow-hidden">
+                    <Card className="rounded-xl border-2 border-gray-200 transition-all hover:border-primary hover:shadow-2xl h-full flex flex-col bg-white overflow-hidden py-0">
                       {service.imageUrl && (
                         <div className="h-48 relative overflow-hidden">
                           <div
@@ -308,7 +319,9 @@ export default function Home() {
                       </CardContent>
                       <CardFooter className="px-8 pb-8 pt-0 border-t border-gray-100">
                         <Link
-                          href="#contacto"
+                          href={getWhatsAppUrl(service.title)}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-all uppercase text-xs tracking-widest group/link"
                         >
                           Solicitar información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
@@ -338,7 +351,7 @@ export default function Home() {
                     whileHover={{ scale: 1.02 }}
                     className="h-full"
                   >
-                    <Card className="rounded-xl overflow-hidden border-2 border-gray-200 group h-full flex flex-col bg-white shadow-sm hover:shadow-2xl hover:border-primary transition-all duration-500">
+                    <Card className="rounded-xl overflow-hidden border-2 border-gray-200 group h-full flex flex-col bg-white shadow-sm hover:shadow-2xl hover:border-primary transition-all duration-500 py-0">
                       <div className="h-64 relative overflow-hidden">
                         {project.imageUrl ? (
                           <div
@@ -352,7 +365,7 @@ export default function Home() {
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
                       </div>
-                      <CardHeader className="p-8">
+                      <CardHeader className="p-8 pt-6">
                         <CardTitle className="font-black text-2xl text-primary uppercase tracking-tighter mb-2">
                           {project.title}
                         </CardTitle>
@@ -360,6 +373,16 @@ export default function Home() {
                           {project.description}
                         </CardDescription>
                       </CardHeader>
+                      <CardFooter className="px-8 pb-8 pt-0 border-t border-gray-100">
+                        <Link
+                          href={getWhatsAppUrl(project.title)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-all uppercase text-xs tracking-widest group/link"
+                        >
+                          Solicitar información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
+                        </Link>
+                      </CardFooter>
                     </Card>
                   </motion.div>
                 ))
@@ -384,7 +407,7 @@ export default function Home() {
                     whileHover={{ scale: 1.02 }}
                     className="h-full"
                   >
-                    <Card className="rounded-[2.5rem] overflow-hidden border border-gray-200 group h-full flex flex-col bg-white shadow-sm hover:shadow-2xl transition-all duration-500">
+                    <Card className="rounded-xl overflow-hidden border border-gray-200 group h-full flex flex-col bg-white shadow-sm hover:shadow-2xl transition-all duration-500 py-0">
                       <div className="h-64 relative overflow-hidden">
                         <div
                           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
@@ -392,7 +415,7 @@ export default function Home() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
                       </div>
-                      <CardHeader className="p-8">
+                      <CardHeader className="p-8 pt-6">
                         <CardTitle className="font-black text-2xl text-primary uppercase tracking-tighter mb-2">
                           {product.name}
                         </CardTitle>
@@ -400,18 +423,15 @@ export default function Home() {
                           {product.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardFooter className="mt-auto px-8 pb-8 flex justify-center items-center border-t border-gray-100 pt-6">
-                        <Button
-                          asChild
-                          size="sm"
-                          className="bg-secondary hover:bg-primary text-white font-black uppercase tracking-widest rounded-full px-8 transition-all w-full"
+                      <CardFooter className="px-8 pb-8 pt-0 border-t border-gray-100">
+                        <Link
+                          href={getWhatsAppUrl(product.name)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-all uppercase text-xs tracking-widest group/link"
                         >
-                          <Link
-                            href={`mailto:contacto@dismacorp.com?subject=Pedido de ${product.name}`}
-                          >
-                            Solicitar información
-                          </Link>
-                        </Button>
+                          Solicitar información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
+                        </Link>
                       </CardFooter>
                     </Card>
                   </motion.div>
@@ -456,7 +476,7 @@ export default function Home() {
                   {
                     icon: <Phone className="text-secondary" />,
                     label: "Llámanos",
-                    val: "+51 987 654 321",
+                    val: "+51 965 282 183",
                   },
                   {
                     icon: <Mail className="text-secondary" />,
@@ -472,9 +492,20 @@ export default function Home() {
                       <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
                         {item.label}
                       </div>
-                      <div className="text-lg font-black text-primary">
-                        {item.val}
-                      </div>
+                      {item.label === "Llámanos" ? (
+                        <Link 
+                          href="https://wa.me/51965282183" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-lg font-black text-primary hover:text-secondary transition-colors"
+                        >
+                          {item.val}
+                        </Link>
+                      ) : (
+                        <div className="text-lg font-black text-primary">
+                          {item.val}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

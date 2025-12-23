@@ -96,7 +96,7 @@ export default function Header() {
                 ? 'bg-primary text-white hover:bg-secondary' 
                 : 'bg-white text-primary hover:bg-secondary hover:text-white'
             }`}>
-            <Link href="tel:+51987654321">
+            <Link href="https://wa.me/51965282183" target="_blank" rel="noopener noreferrer">
               <Phone size={16} />
               Llamar ahora
             </Link>
